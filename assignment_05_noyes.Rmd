@@ -1,0 +1,97 @@
+---
+title: "Assignment 05"
+author: "Neil Noyes"
+date: "9/19/2020"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem 1
+
+Load libraries
+```{r}
+library(tidyverse)
+library(here)
+```
+
+Store path to dataset
+```{r}
+store_data_path <- here("Datasets", "msft.csv")
+```
+
+Read in data
+```{r}
+store_data <- read_csv(store_data_path)
+```
+
+Configure col_types (Price changed to col_number from col_character)
+```{r}
+store_data <- read_csv(store_data_path,
+                        col_types = cols(
+                                          Name = col_character(),
+                                          Rating = col_double(),
+                                          `No of people Rated` = col_double(),
+                                          Category = col_character(),
+                                          Date = col_character(),
+                                          Price = col_number()
+                                        )
+                       )
+```
+
+And take a look
+```{r}
+str(store_data)
+```
+
+We see that the string "Free" is used for price for free applications, which then leads to the column being read as NA as a parse error, so we will replace these with 0.0's
+```{r}
+store_data <- store_data %>%
+  mutate(
+    Price = ifelse(is.na(Price),
+                    0.0,           
+                    Price        
+    )
+  )
+```
+
+Now we see the change
+```{r}
+str(store_data)
+```
+
+## Problem 2
+
+If we look at one variable...
+
+We can take a look at the distribution of ratings for apps on the Windows store:
+```{r}
+store_data %>%
+  ggplot() +
+  geom_bar(aes(x = Rating), width = 0.5, fill = "#FF6666") +
+  ggtitle("Distribution of Application Ratings") +
+  xlab("Rating (1-5)") +
+  ylab("# Ratings")
+```
+
+We see here that most ratings in the Windows store are fairly positive. 
+
+## Problem 3
+
+Now with two variables... 
+
+Lets look at the average rating per category!
+```{r}
+store_data %>%
+  ggplot() +
+  geom_boxplot(aes(x = Category, y = Rating)) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  ggtitle("Distribution of Ratings by Category")
+```
+
+Here we see a solid average of 4 stars for every category except multimedia design.. I guess those people have bad apps. 
+
