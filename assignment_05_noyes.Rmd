@@ -59,6 +59,8 @@ store_data <- store_data %>%
   )
 ```
 
+<span style="color: green; font-size: 14pt">Did you double check that *all* the NAs are as a result of the "Free" string, or are there any other causes?</span> 
+
 Now we see the change
 ```{r}
 str(store_data)
@@ -80,6 +82,8 @@ store_data %>%
 
 We see here that most ratings in the Windows store are fairly positive. 
 
+<span style="color: green; font-size: 14pt">I'm not so sure about setting the width here. This lead to think this was a histogram, and that the ratings were more continuous.</span> 
+
 ## Problem 3
 
 Now with two variables... 
@@ -94,4 +98,6 @@ store_data %>%
 ```
 
 Here we see a solid average of 4 stars for every category except multimedia design.. I guess those people have bad apps. 
+
+<span style="color: green; font-size: 14pt">Interesting.  Although there's some differences in variability for some catgories.</span> 
 
